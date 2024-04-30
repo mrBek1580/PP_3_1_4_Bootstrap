@@ -178,7 +178,7 @@
                                                                             name="roles"
                                                                             multiple size="2">
                                                                         <option th:each="role: ${roles}"
-                                                                                th:value="${role.getRoleId()}">
+                                                                                th:value="${role.getId()}">
                                                                             <th:block
                                                                                     th:text="${role.getRoleNameString()}">
                                                                             </th:block>
@@ -361,7 +361,7 @@
                                             <strong>Role</strong>
                                             <select id="newUserRoles" class="form-select" name="roles"
                                                     multiple size="2">
-                                                <option th:each="role: ${roles}" th:value="${role.getRoleId()}">
+                                                <option th:each="role: ${roles}" th:value="${role.getId()}">
                                                     <th:block th:text="${role.getRoleNameString()}">
                                                     </th:block>
                                                 </option>

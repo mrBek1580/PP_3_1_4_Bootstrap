@@ -9,7 +9,6 @@ import ru.kata.spring.boot_security.demo.entity.Role;
 import ru.kata.spring.boot_security.demo.entity.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
-
 import java.security.Principal;
 import java.util.HashSet;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.Set;
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
-    private static final String REDIRECT_TO_ADMIN = "redirect:/admin";
+
     private final UserService userServiceImpl;
     private final RoleService roleServiceImpl;
 
@@ -45,11 +44,11 @@ public class AdminController {
         Set<Role> roles = roleServiceImpl.findDyIds(roleIds);
         user.setRoles(roles);
         userServiceImpl.saveUser(user);
-        return REDIRECT_TO_ADMIN;
+        return "redirect:/admin";
     }
 
 
-    @PostMapping(value = "/{id}/edit_user")
+    @PostMapping("/{id}/edit_user")
     public String updateUser(@ModelAttribute("user") User user, @PathVariable("id") Long id,
                              @RequestParam(required = false) List<Long> roles
     ) {
@@ -63,12 +62,12 @@ public class AdminController {
         }
         user.setRoles(userRoles);
         userServiceImpl.updateUser(user);
-        return REDIRECT_TO_ADMIN;
+        return "redirect:/admin";
     }
 
-    @GetMapping(value = "/{id}/delete_user")
+    @GetMapping("/{id}/delete_user")
     public String deleteUserById(@PathVariable Long id) {
         userServiceImpl.delete(id);
-        return REDIRECT_TO_ADMIN;
+        return "redirect:/admin";
     }
 }

@@ -2,7 +2,6 @@ package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.entity.Role;
-
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
@@ -24,12 +23,6 @@ public class RoleDaoImpl implements RoleDAO {
     public Set<Role> getAllRoles() {
         List<Role> roleList = entityManager.createQuery("SELECT r FROM Role r", Role.class).getResultList();
         return new LinkedHashSet<>(roleList);
-    }
-
-    @Override
-    public Role saveRole(Role role) {
-        entityManager.persist(role);
-        return role;
     }
 
     @Override
@@ -59,14 +52,5 @@ public class RoleDaoImpl implements RoleDAO {
                 .getResultList();
         return new HashSet<>(rolesList);
     }
-
-
-    @Override
-    public void deleteRoleById(Long id) {
-        entityManager.createQuery("delete Role where id = :roleId")
-                .setParameter("roleId", id)
-                .executeUpdate();
-    }
-
 
 }
