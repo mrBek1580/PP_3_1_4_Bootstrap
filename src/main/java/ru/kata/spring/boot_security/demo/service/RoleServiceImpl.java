@@ -11,31 +11,31 @@ import java.util.Set;
 @Service
 @Transactional
 public class RoleServiceImpl implements RoleService {
-    private final RoleDAO roleRepository;
+    private final RoleDAO roleDAO;
 
     @Autowired
     public RoleServiceImpl(RoleDAO roleRepository) {
-        this.roleRepository = roleRepository;
+        this.roleDAO = roleRepository;
     }
 
     @Override
     @Transactional(readOnly = true)
     public Set<Role> getAllRoles() {
-        return roleRepository.getAllRoles();
+        return roleDAO.getAllRoles();
     }
 
     @Override
     public Role getRoleById(Long id) {
-        return roleRepository.getRoleById(id);
+        return roleDAO.getRoleById(id);
     }
 
     @Override
     public Role getRoleByName(String name) {
-        return roleRepository.getRoleByName(name);
+        return roleDAO.getRoleByName(name);
     }
 
     @Override
     public Set<Role> findDyIds(Set<Long> ids) {
-        return roleRepository.findByIds(ids);
+        return roleDAO.findByIds(ids);
     }
 }

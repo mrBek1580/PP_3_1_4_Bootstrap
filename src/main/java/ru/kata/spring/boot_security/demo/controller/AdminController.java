@@ -19,31 +19,31 @@ import java.util.Set;
 @RequestMapping(value = "/admin")
 public class AdminController {
 
-    private final UserService userServiceImpl;
-    private final RoleService roleServiceImpl;
+    private final UserService userService;
+    private final RoleService roleService;
 
     @Autowired
     public AdminController(UserService userServiceImpl, RoleService roleServiceImpl) {
-        this.userServiceImpl = userServiceImpl;
-        this.roleServiceImpl = roleServiceImpl;
+        this.userService = userServiceImpl;
+        this.roleService = roleServiceImpl;
     }
 
     @GetMapping()
     public String getAdminPage(@AuthenticationPrincipal User user,
                                Principal principal,
                                Model model) {
-        model.addAttribute("allUsers", userServiceImpl.getAllUsers());
-        model.addAttribute("authUser", userServiceImpl.findUserByUsername(principal.getName()));
-        model.addAttribute("roles", roleServiceImpl.getAllRoles());
+        model.addAttribute("allUsers", userService.getAllUsers());
+        model.addAttribute("authUser", userService.findUserByUsername(principal.getName()));
+        model.addAttribute("roles", roleService.getAllRoles());
         model.addAttribute("newUser", new User());
         return "admin_page";
     }
 
     @PostMapping()
-    public String addUser(@ModelAttribute("newUser") User user, @RequestParam("roles") Set<Long> roleIds, Model model) {
-        Set<Role> roles = roleServiceImpl.findDyIds(roleIds);
+    public String addUser(@ModelAttribute("newUser") User user, @RequestParam("roles") Set<Long> roleIds) {
+        Set<Role> roles = roleService.findDyIds(roleIds);
         user.setRoles(roles);
-        userServiceImpl.saveUser(user);
+        userService.saveUser(user);
         return "redirect:/admin";
     }
 
@@ -54,20 +54,20 @@ public class AdminController {
     ) {
         Set<Role> userRoles = new HashSet<>();
         if (roles == null) {
-            userRoles.add(roleServiceImpl.getRoleByName("ROLE_USER"));
+            userRoles.add(roleService.getRoleByName("ROLE_USER"));
         } else {
             for (Long roleId : roles) {
-                userRoles.add(roleServiceImpl.getRoleById(roleId));
+                userRoles.add(roleService.getRoleById(roleId));
             }
         }
         user.setRoles(userRoles);
-        userServiceImpl.updateUser(user);
+        userService.updateUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping("/{id}/delete_user")
+    @DeleteMapping("/{id}/delete_user")
     public String deleteUserById(@PathVariable Long id) {
-        userServiceImpl.delete(id);
+        userService.delete(id);
         return "redirect:/admin";
     }
 }

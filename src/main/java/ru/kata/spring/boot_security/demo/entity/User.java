@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Getter
 @Setter
 public class User implements UserDetails {
@@ -40,7 +40,7 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @Fetch(FetchMode.JOIN)
-    @JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 

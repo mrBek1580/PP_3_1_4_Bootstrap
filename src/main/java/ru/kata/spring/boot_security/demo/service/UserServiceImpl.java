@@ -16,47 +16,47 @@ import java.util.List;
 @Service
 @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
-    private final UserDAO userRepository;
+    private final UserDAO userDAO;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
     public UserServiceImpl(UserDAO userRepository, @Lazy PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
+        this.userDAO = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void saveUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.addUser(user);
+        userDAO.addUser(user);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
+        return userDAO.getAllUsers();
     }
 
     @Override
     public void delete(Long userId) {
-        userRepository.removeUserById(userId);
+        userDAO.removeUserById(userId);
     }
 
     @Override
     public void updateUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.updateUser(user);
+        userDAO.updateUser(user);
     }
 
     @Override
     public User findUserByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userDAO.findByUsername(username);
     }
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        User user = userDAO.findByUsername(username);
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
